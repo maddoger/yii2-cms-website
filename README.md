@@ -2,9 +2,9 @@
 
 ## Installation
 
-1) clone
-1) migrate: ``yii migrate --migrationPath=@maddoger/website/common/migrations``
-1) modules:
+1. clone
+1. migrate: ``yii migrate --migrationPath=@maddoger/website/common/migrations``
+1. modules:
 
 ```php
 'modules' => [
@@ -13,6 +13,28 @@
 		'website-backend' => 'maddoger\website\backend\Module',
 		...
 	],
+```
+
+## Multi language support
+
+For using multi languages you need to replace i18n component to the I18N from `maddoger\yii2-cms-core` package:
+
+```
+'i18n' => [
+    'class' => 'maddoger\core\i18n\I18N',
+    'availableLanguages' => [
+        [
+            'slug' => 'ru',
+            'locale' => 'ru-RU',
+            'name' => 'Русский',
+        ],
+        [
+            'slug' => 'en',
+            'locale' => 'en-US',
+            'name' => 'English',
+        ],
+    ],
+],
 ```
 
 ## Text formats

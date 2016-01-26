@@ -1,0 +1,28 @@
+{
+    "name": "maddoger/yii2-cms-website",
+    "type": "yii2-extension",
+    "description": "Website module for Yii2 CMS.",
+    "authors": [
+        {
+            "name": "Vitaliy Syrchikov",
+            "email": "maddoger@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "yiisoft/yii2-jui": "*",
+        "maddoger/yii2-cms-core": "*",
+        "maddoger/yii2-select2": "*",
+        "maddoger/yii2-textformats": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "maddoger\\website\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

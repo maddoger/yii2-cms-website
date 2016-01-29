@@ -322,11 +322,12 @@ class Menu extends BaseMenu
             $preg = null;
             if (isset($item['preg']) && !empty($item['preg'])) {
                 $preg = $item['preg'];
+                //$preg = '/^' . str_replace('*', '(.*?)', str_replace('/', '\/', $preg)) . '$/is';
             } elseif (isset($item['url']) && is_string($item['url'])) {
-                $preg = $item['url'] . ($item['url'] != '/' ? '/*' : '');
+                $preg = $item['url'] . ($item['url'] != '/' ? '(/|\?)(.*?)' : '');
             }
             if (!empty($preg)) {
-                $preg = '/^' . str_replace('*', '(.*?)', str_replace('/', '\/', $preg)) . '$/is';
+                $preg = '`^' . $preg . '$`is';
                 $res = (preg_match($preg, Yii::$app->request->url) || preg_match($preg, Yii::$app->request->url . '/'));
             }
         }

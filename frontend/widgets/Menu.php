@@ -213,7 +213,7 @@ class Menu extends BaseMenu
                 $res[$k]['items'] = $this->filterActiveItems($a['items']);
             }
         }
-        return $res;
+        return array_values($res);
     }
 
     /**

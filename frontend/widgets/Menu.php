@@ -38,6 +38,11 @@ class Menu extends BaseMenu
     public $maxLevel;
 
     /**
+     * @var bool show only max existing level between min and max
+     */
+    public $onlyMaxLevel = false;
+
+    /**
      * @var string
      */
     public $menuModelClass = 'maddoger\website\common\models\Menu';
@@ -149,7 +154,12 @@ class Menu extends BaseMenu
         if ($this->saveActiveItemsToParam && !$this->saveActiveItemsAfterLevelFilter) {
             $this->view->params[$this->saveActiveItemsToParam] = $this->filterActiveItems($items);
         }
+
         $items = $this->normalizeItemsByLevel($items);
+
+        if ($this->onlyMaxLevel) {
+            $items = $this->normalizeItemsForMaxLevel($items);
+        }
 
         if ($this->saveActiveItemsToParam && $this->saveActiveItemsAfterLevelFilter) {
             $this->view->params[$this->saveActiveItemsToParam] = $this->filterActiveItems($items);
@@ -168,6 +178,23 @@ class Menu extends BaseMenu
     }
 
     /**
+     * Get max-leveled active menu
+     * @param $items
+     * @return array
+     */
+    protected function normalizeItemsForMaxLevel($items)
+    {
+        foreach ($items as $key=>$item) {
+            if ($item['active'] && isset($item['items']) && !empty($item['items'])) {
+                return $this->normalizeItemsForMaxLevel($item['items']);
+            } else {
+                $items[$key]['items'] = [];
+            }
+        }
+        return $items;
+    }
+
+    /**
      * @param $items
      * @param int $level
      * @return array
@@ -176,6 +203,9 @@ class Menu extends BaseMenu
     {
         if ($this->minLevel || $this->maxLevel) {
             $res = [];
+            if (!$this->maxLevel) {
+                $this->maxLevel = PHP_INT_MAX;
+            }
             foreach ($items as $item) {
                 if ($level >= $this->minLevel && $level <= $this->maxLevel) {
                     //Right level
@@ -209,7 +239,9 @@ class Menu extends BaseMenu
             return $a['active'];
         });
         foreach ($res as $k=>$a) {
+            $res[$k]['has_items'] = false;
             if (!empty($a['items'])) {
+                $res[$k]['has_items'] = true;
                 $res[$k]['items'] = $this->filterActiveItems($a['items']);
             }
         }
